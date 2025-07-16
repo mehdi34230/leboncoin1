@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
-//import { useCycleList } from '@vueuse/core'
+import { useCycleList } from '@vueuse/core'
 
 import axios from 'axios'
 
@@ -9,13 +9,6 @@ const props = defineProps({
 })
 
 const offerInfos = ref(null)
-
-// 'offerInfos' est un objet vide dans un premier temps, puis il reçoit sa nouvelle valeur. On utilise 'computed' pour détecter ce changement et déclencher 'useCycleList' avec la bonne valeur
-/*const cyclelist = computed(() => {
-  const { state, next, prev } = useCycleList(offerInfos.value.attributes.pictures.data)
-
-  return { state, next, prev }
-})*/
 
 onMounted(async () => {
   try {
@@ -34,6 +27,16 @@ onMounted(async () => {
   }
 })
 
+const cycleList = computed(() => {
+  if (offerInfos.value.attributes.pictures.data) {
+    const { state, next, prev } = useCycleList(offerInfos.value.attributes.pictures.data)
+
+    return { state, next, prev }
+  } else {
+    return {}
+  }
+})
+
 // Pour afficher la date de création de l'offre au bon format
 const formatedDate = computed(() => {
   // -- Syntaxe qui chaîne toutes les méthodes
@@ -46,7 +49,19 @@ const formatedDate = computed(() => {
     <p v-if="offerInfos === null">Chargement en cours ...</p>
     <div class="container" v-else>
       <div class="leftCol">
-        <img :src="offerInfos.attributes.pictures.data[0].attributes.url" alt="" />
+        <div class="caroussel">
+          <font-awesome-icon
+            :icon="['fas', 'angle-left']"
+            @click="cycleList.prev()"
+            v-if="offerInfos.attributes.pictures.data?.length > 1"
+          />
+          <img :src="cycleList.state.value.attributes.url" alt="" />
+          <font-awesome-icon
+            :icon="['fas', 'angle-right']"
+            @click="cycleList.next()"
+            v-if="offerInfos.attributes.pictures.data?.length > 1"
+          />
+        </div>
 
         <p class="title">{{ offerInfos.attributes.title }}</p>
         <p class="price">{{ offerInfos.attributes.price }} €</p>
@@ -86,8 +101,12 @@ const formatedDate = computed(() => {
 </template>
 
 <style scoped>
+main .container {
+  padding: 30px 0;
+}
+
 main {
-  min-height: calc(100vh - var(--height-header) - var(--height-footer));
+  min-height: calc(100vh - var(--height-footer)- var(--height-header));
 }
 .container {
   display: flex;
@@ -96,7 +115,7 @@ main {
 
 .leftCol {
   width: 65%;
-  border: 1px solid blue;
+  /*border: 1px solid blue;*/
 }
 
 .leftCol img {
@@ -106,6 +125,16 @@ main {
   margin-bottom: 40px;
 }
 
+.caroussel {
+  display: flex;
+
+  align-items: center;
+}
+
+.carouselle svg {
+  font-size: 18px;
+  cursor: pointer;
+}
 .title {
   font-size: 24px;
   font-weight: bold;
@@ -140,7 +169,7 @@ h2 + p {
 /*-----RIGHT COLUMN-----*/
 .rightCol {
   width: 35%;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   height: 365px;
   box-shadow: 0 0 5px var(--med-grey);
   padding: 20px;

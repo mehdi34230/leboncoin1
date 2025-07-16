@@ -12,6 +12,9 @@
   --height-footer: 80px;
 }
 
+main {
+  margin-top: var(--height-header);
+}
 body {
   font-family: 'nunito-sans;' sans-serif;
 }

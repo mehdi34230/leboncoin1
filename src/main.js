@@ -20,6 +20,8 @@ import {
   faSearch,
   faAngleLeft,
   faAngleRight,
+  faChevronCircleRight,
+  faChevronCircleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 // Ajout de l'icône à la bibliothèque

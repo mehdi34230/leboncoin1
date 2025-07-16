@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+// eslint-disable-next-line vue/multi-word-component-names
 <script setup>
 import BtnPublishOffer from './BtnPublishOffer.vue'
 </script>
@@ -43,7 +45,12 @@ import BtnPublishOffer from './BtnPublishOffer.vue'
 
 <style scoped>
 header {
-  height: var(--height);
+  height: var(--height-header);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  border-bottom: 0.5px solid var(--med-grey);
   /*border: 1px solid green;*/
 }
 
