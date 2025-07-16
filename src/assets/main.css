@@ -1,0 +1,27 @@
+@import './base.css';
+
+:root {
+  --orange: #fe6e13;
+  --light-grey: #f4f9fe;
+  --med-grey: grey;
+  --beige: #fee9dd;
+  --dark-grey: #627c93;
+  --brown: #89380f;
+  --dark-blue: #094170;
+  --height-header: 110px;
+  --height-footer: 80px;
+}
+
+body {
+  font-family: 'nunito-sans;' sans-serif;
+}
+.container {
+  width: 1055px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
