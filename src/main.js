@@ -20,8 +20,8 @@ import {
   faSearch,
   faAngleLeft,
   faAngleRight,
-  faChevronCircleRight,
-  faChevronCircleLeft,
+  faSignOutAlt,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 // Ajout de l'icône à la bibliothèque
@@ -36,6 +36,8 @@ library.add(
   faSearch,
   faAngleLeft,
   faAngleRight,
+  faSignOutAlt,
+  faArrowRight,
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)

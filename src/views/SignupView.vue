@@ -51,18 +51,26 @@ const handleSubmit = async () => {
   <main>
     <div class="container">
       <form @submit.prevent="handleSubmit">
-        <h1>Bonjour !</h1>
-        <h2>Inscrivez-vous pour découvrir toutes nos fonctionnalités.</h2>
+        <div>
+          <h1>Bonjour !</h1>
+          <h2>Inscrivez-vous pour découvrir toutes nos fonctionnalités.</h2>
+        </div>
 
-        <label for="username">Nom<sup>*</sup></label
-        ><input type="text" name="username" id="username" v-model="username" />
-        <label for="email">E-mail<sup>*</sup></label
-        ><input type="email" name="email" id="email" v-model="email" />
-        <label for="password">Mot de passe <sup>*</sup></label
-        ><input type="password" name="password" id="password" v-model="password" />
+        <label for="username"
+          ><span>Nom<sup>*</sup></span
+          ><input type="text" name="username" id="username" v-model="username"
+        /></label>
+        <label for="email"
+          ><span>E-mail<sup>*</sup></span
+          ><input type="email" name="email" id="email" v-model="email"
+        /></label>
+        <label for="password"
+          ><span>Mot de passe <sup>*</sup></span
+          ><input type="password" name="password" id="password" v-model="password"
+        /></label>
 
         <p v-if="isSubmitting">Inscription en cours...</p>
-        <button v-else>S'inscrire</button>
+        <button v-else>S'inscrire <font-awesome-icon :icon="['fas', 'arrow-right']" /></button>
         <p v-if="errorMessage">{{ errorMessage }}</p>
 
         <p>
@@ -78,5 +86,76 @@ const handleSubmit = async () => {
 <style scoped>
 main {
   height: calc(100vh - var(--height-header) - var(--height-footer));
+}
+
+.container {
+  background-image: url('../assets/illustration.png');
+  background-size: contain;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  /*border: 1px solid red;*/
+  height: 490px;
+  width: 480px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 0 7px var(--med-grey);
+  border-radius: 15px;
+  background-color: white;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  border: 1px solid black;
+  height: 45px;
+  border-radius: 15px;
+  padding-left: 10px;
+}
+
+button {
+  background-color: var(--orange);
+  color: white;
+  font-size: 13px;
+  border-radius: 15px;
+  border: none;
+  height: 45px;
+  font-weight: bold;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-color: white;
+}
+
+svg {
+  margin-left: 10px;
+}
+
+p:last-child {
+  text-align: center;
+}
+
+a {
+  font-weight: bold;
+  text-decoration: underline;
 }
 </style>

@@ -3,6 +3,10 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import BtnPublishOffer from './BtnPublishOffer.vue'
+import { inject } from 'vue'
+
+const GlobalStore = inject('GlobalStore')
+console.log(GlobalStore.userToken)
 </script>
 
 <template>
@@ -21,11 +25,15 @@ import BtnPublishOffer from './BtnPublishOffer.vue'
           </div>
         </div>
         <div class="connectionPart">
-          <RouterLink :to="{ name: 'login' }">
+          <RouterLink :to="{ name: 'login' }" v-if="!GlobalStore.userToken.value">
             <font-awesome-icon :icon="['far', 'user']" />
             <p>Se connecter</p>
           </RouterLink>
-          <!--<font-awesome-icon :icon="['fas', 'sign-out-alt']" />-->
+          <font-awesome-icon
+            :icon="['fas', 'sign-out-alt']"
+            v-else
+            @click="GlobalStore.changeToken('')"
+          />
         </div>
       </div>
       <div class="bottomPart">
