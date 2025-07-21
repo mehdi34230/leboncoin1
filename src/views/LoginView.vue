@@ -5,6 +5,8 @@ import { RouterLink } from 'vue-router'
 <template>
   <main>
     <div class="container">
+      <form></form>
+
       <p>
         Envie de nous rejoindre ?
 
