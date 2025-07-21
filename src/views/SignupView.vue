@@ -1,17 +1,49 @@
 <script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, inject } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import axios from 'axios'
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
+const errorMessage = ref('')
+const isSubmitting = ref(false)
 
-const handleSubmit = () => {
+const GlobalStore = inject('GlobalStore')
+
+const Router = useRouter()
+
+const handleSubmit = async () => {
   console.log({
     username: username.value,
     email: email.value,
     password: password.value,
   })
+
+  if (username.value && email.value && password.value) {
+    isSubmitting.value = true
+    try {
+      const { data } = await axios.post(
+        'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/auth/local/register',
+        {
+          username: username.value,
+          email: email.value,
+          password: password.value,
+        },
+      )
+
+      console.log('response>>>>data', data)
+      GlobalStore.changeToken(data.jwt)
+
+      Router.push({ name: 'home' })
+    } catch (error) {
+      console.log('catch>>>>error', error)
+      errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'
+    }
+    isSubmitting.value = false
+  } else {
+    errorMessage.value = 'Veuillez remplir tout les champs'
+  }
 }
 </script>
 
@@ -29,7 +61,10 @@ const handleSubmit = () => {
         <label for="password">Mot de passe <sup>*</sup></label
         ><input type="password" name="password" id="password" v-model="password" />
 
-        <button>S'inscrire</button>
+        <p v-if="isSubmitting">Inscription en cours...</p>
+        <button v-else>S'inscrire</button>
+        <p v-if="errorMessage">{{ errorMessage }}</p>
+
         <p>
           Vous avez déjà un compte ?
 
