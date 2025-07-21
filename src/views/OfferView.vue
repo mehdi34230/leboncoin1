@@ -106,7 +106,7 @@ main .container {
 }
 
 main {
-  min-height: calc(100vh - var(--height-footer)- var(--height-header));
+  min-height: calc(100vh - var(--height-footer) - var(--height-header));
 }
 .container {
   display: flex;

@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 // eslint-disable-next-line vue/multi-word-component-names
 <script setup>
+import { RouterLink } from 'vue-router'
 import BtnPublishOffer from './BtnPublishOffer.vue'
 </script>
 
@@ -8,7 +9,10 @@ import BtnPublishOffer from './BtnPublishOffer.vue'
   <header>
     <div class="container">
       <div class="topPart">
-        <img src="../assets/logo.svg" alt="" />
+        <RouterLink :to="{ name: 'home' }">
+          <img src="../assets/logo.svg" alt="" />
+        </RouterLink>
+
         <div class="middlePart">
           <BtnPublishOffer />
           <div>
@@ -17,10 +21,10 @@ import BtnPublishOffer from './BtnPublishOffer.vue'
           </div>
         </div>
         <div class="connectionPart">
-          <div>
+          <RouterLink :to="{ name: 'login' }">
             <font-awesome-icon :icon="['far', 'user']" />
             <p>Se connecter</p>
-          </div>
+          </RouterLink>
           <!--<font-awesome-icon :icon="['fas', 'sign-out-alt']" />-->
         </div>
       </div>
@@ -103,7 +107,7 @@ input:focus {
   outline: none;
 }
 
-.connectionPart > div {
+.connectionPart > a {
   display: flex;
   flex-direction: column;
   align-items: center;
