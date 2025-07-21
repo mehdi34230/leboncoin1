@@ -14,7 +14,7 @@ onMounted(async () => {
       'https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers?populate[0]=pictures&populate[1]=owner.avatar',
     )
 
-    console.log(data.data)
+    /*console.log(data.data)*/
 
     offersList.value = data.data
   } catch (error) {
