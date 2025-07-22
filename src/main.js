@@ -3,6 +3,7 @@ import './assets/main.css'
 import { createApp, ref } from 'vue'
 import App from './App.vue'
 import router from './router'
+import VueCookies from 'vue-cookies'
 
 // Import de FontAwesome Core
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -11,7 +12,14 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Import icône
-import { faPlusSquare, faHeart, faClock, faUser } from '@fortawesome/free-regular-svg-icons'
+import {
+  faPlusSquare,
+  faHeart,
+  faClock,
+  faUser,
+  faEyeSlash,
+  faEye,
+} from '@fortawesome/free-regular-svg-icons'
 
 import {
   faCheckDouble,
@@ -38,21 +46,25 @@ library.add(
   faAngleRight,
   faSignOutAlt,
   faArrowRight,
+  faEyeSlash,
+  faEye,
 )
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(router)
+app.use(VueCookies)
 
-const userToken = ref('')
+// Access cookies via app.config.globalProperties.$cookies after plugin installation
+const userInfos = ref($cookies.get('userInfos') || null)
 
-const changeToken = (token) => {
-  userToken.value = token
+const changeUserInfos = (infos) => {
+  userInfos.value = infos
 }
 
 app.provide('GlobalStore', {
-  userToken: userToken,
-  changeToken: changeToken,
+  userInfos: userInfos,
+  changeUserInfos: changeUserInfos,
 })
 
 app.mount('#app')

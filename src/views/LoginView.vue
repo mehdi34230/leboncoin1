@@ -7,6 +7,7 @@ const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 const isSubmitting = ref(false)
+const displayPassword = ref(false)
 
 const GlobalStore = inject('GlobalStore')
 const router = useRouter()
@@ -26,7 +27,9 @@ const handleSubmit = async () => {
         },
       )
       console.log('Login successful:', data)
-      GlobalStore.changeToken(data.jwt)
+      GlobalStore.changeUserInfos({ username: data.user.username, token: data.jwt })
+
+      $cookies.set('userInfos', { username: data.user.username, token: data.jwt })
 
       router.push({ name: 'home' })
     } catch (error) {
@@ -52,13 +55,33 @@ const handleSubmit = async () => {
 
         <label for="email"
           ><span>E-mail<sup>*</sup></span
-          ><input type="email" name="email" id="email" v-model="email"
+          ><input type="email" name="email" id="email" v-model="email" @input="errorMessage = ''"
         /></label>
 
         <label for="password"
-          ><span>Mot de passe<sup>*</sup></span
-          ><input type="password" name="password" id="password" v-model="password"
-        /></label>
+          ><span>Mot de passe<sup>*</sup></span>
+          <div class="inputPassword">
+            <input
+              :type="displayPassword ? 'text' : 'password'"
+              name="password"
+              id="password"
+              v-model="password"
+              @input="errorMessage = ''"
+            />
+            <div>
+              <font-awesome-icon
+                :icon="['far', 'eye-slash']"
+                v-if="!displayPassword"
+                @click="displayPassword = !displayPassword"
+              />
+              <font-awesome-icon
+                :icon="['far', 'eye']"
+                v-else
+                @click="displayPassword = !displayPassword"
+              />
+            </div>
+          </div>
+        </label>
 
         <p v-if="isSubmitting">Connexion en cours...</p>
         <button v-else>
@@ -66,7 +89,7 @@ const handleSubmit = async () => {
           <font-awesome-icon :icon="['fas', 'arrow-right']" />
         </button>
 
-        <p v-if="errorMessage">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="textError">{{ errorMessage }}</p>
         <p>
           Envie de nous rejoindre ?
 
@@ -112,12 +135,35 @@ label {
 }
 
 input {
-  border: 1px solid black;
   height: 45px;
   border-radius: 15px;
   padding-left: 10px;
+  border: 1px solid black;
 }
 
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.inputPassword > div {
+  border-left: 1px solid black;
+  display: flex;
+
+  align-items: center;
+  width: 40px;
+}
+
+.inputPassword > input {
+  flex: 1;
+  border: none;
+}
+
+.inputPassword {
+  border: 1px solid black;
+  display: flex;
+  border-radius: 15px;
+}
 button {
   background-color: var(--orange);
   color: white;
@@ -127,10 +173,7 @@ button {
   height: 45px;
   font-weight: bold;
 }
-input:focus {
-  outline: none;
-  border-color: var(--primary);
-}
+
 h1 {
   font-size: 24px;
   font-weight: bold;
@@ -150,6 +193,10 @@ a {
   text-decoration: underline;
 }
 
+.textError {
+  text-align: center;
+  color: var(--orange);
+}
 /*h2 {
   margin-bottom: 20px;
 }*/

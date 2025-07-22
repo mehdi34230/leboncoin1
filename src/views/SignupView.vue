@@ -8,6 +8,7 @@ const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 const isSubmitting = ref(false)
+const displayPassword = ref(false)
 
 const GlobalStore = inject('GlobalStore')
 
@@ -33,7 +34,7 @@ const handleSubmit = async () => {
       )
 
       console.log('response>>>>data', data)
-      GlobalStore.changeToken(data.jwt)
+      GlobalStore.changeUserInfos({ username: data.user.username, token: data.jwt })
 
       Router.push({ name: 'home' })
     } catch (error) {
@@ -58,20 +59,48 @@ const handleSubmit = async () => {
 
         <label for="username"
           ><span>Nom<sup>*</sup></span
-          ><input type="text" name="username" id="username" v-model="username"
+          ><input
+            type="text"
+            name="username"
+            id="username"
+            v-model="username"
+            @input="errorMessage = ''"
         /></label>
+
         <label for="email"
           ><span>E-mail<sup>*</sup></span
-          ><input type="email" name="email" id="email" v-model="email"
+          ><input type="email" name="email" id="email" v-model="email" @input="errorMessage = ''"
         /></label>
+
         <label for="password"
-          ><span>Mot de passe <sup>*</sup></span
-          ><input type="password" name="password" id="password" v-model="password"
-        /></label>
+          ><span>Mot de passe <sup>*</sup></span>
+          <div class="inputPassword">
+            <input
+              :type="displayPassword ? 'text' : 'password'"
+              name="password"
+              id="password"
+              v-model="password"
+              @input="errorMessage = ''"
+            />
+
+            <div>
+              <font-awesome-icon
+                :icon="['far', 'eye-slash']"
+                v-if="!displayPassword"
+                @click="displayPassword = !displayPassword"
+              />
+              <font-awesome-icon
+                :icon="['far', 'eye']"
+                v-else
+                @click="displayPassword = !displayPassword"
+              />
+            </div>
+          </div>
+        </label>
 
         <p v-if="isSubmitting">Inscription en cours...</p>
         <button v-else>S'inscrire <font-awesome-icon :icon="['fas', 'arrow-right']" /></button>
-        <p v-if="errorMessage">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="textError">{{ errorMessage }}</p>
 
         <p>
           Vous avez déjà un compte ?
@@ -124,6 +153,25 @@ input {
   padding-left: 10px;
 }
 
+.inputPassword > div {
+  border-left: 1px solid black;
+  display: flex;
+
+  align-items: center;
+  width: 40px;
+}
+
+.inputPassword > input {
+  flex: 1;
+  border: none;
+}
+
+.inputPassword {
+  border: 1px solid black;
+  display: flex;
+  border-radius: 15px;
+}
+
 button {
   background-color: var(--orange);
   color: white;
@@ -157,5 +205,10 @@ p:last-child {
 a {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.textError {
+  text-align: center;
+  color: var(--orange);
 }
 </style>
